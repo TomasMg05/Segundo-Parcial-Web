@@ -1,6 +1,9 @@
+CREATE DATABASE creditos_ufps;
+
+USE creditos_ufps;
 
 CREATE TABLE IF NOT EXISTS persona (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     documento VARCHAR(10) NOT NULL UNIQUE,
     nombre VARCHAR(100) NOT NULL,
     email VARCHAR(50) NOT NULL,
@@ -10,25 +13,25 @@ CREATE TABLE IF NOT EXISTS persona (
 
 
 CREATE TABLE IF NOT EXISTS estado (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     descripcion VARCHAR(20) NOT NULL UNIQUE
 );
 
-INSERT INTO estado (id, descripcion) VALUES 
+
+INSERT IGNORE INTO estado (id, descripcion) VALUES 
     (1, 'Solicitud'),
     (2, 'Aprobada'),
     (3, 'Rechazada'),
-    (4, 'Finalizada')
-ON CONFLICT DO NOTHING;
+    (4, 'Finalizada');
 
 
 CREATE TABLE IF NOT EXISTS solicitud (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     fecha DATE NOT NULL,
-    solicitante_id INTEGER NOT NULL,
-    codeudor_id INTEGER NOT NULL,
-    valor NUMERIC(10,0) NOT NULL,
-    estado_id INTEGER NOT NULL,
+    solicitante_id INT NOT NULL,
+    codeudor_id INT NOT NULL,
+    valor DECIMAL(10,0) NOT NULL,
+    estado_id INT NOT NULL,
     observacion TEXT,
     codigo_radicado VARCHAR(10) NOT NULL UNIQUE,
     FOREIGN KEY (solicitante_id) REFERENCES persona(id),
@@ -38,10 +41,10 @@ CREATE TABLE IF NOT EXISTS solicitud (
 
 
 CREATE TABLE IF NOT EXISTS validacion (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(50) NOT NULL,
     documento VARCHAR(10) NOT NULL,
-    fecha DATE NOT NULL,
+    fecha DATETIME NOT NULL,
     estado VARCHAR(20) NOT NULL,
     token VARCHAR(100) NOT NULL UNIQUE,
     codigo VARCHAR(10) NOT NULL UNIQUE
